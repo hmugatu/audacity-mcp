@@ -7,7 +7,6 @@ Noise reduction requires two steps:
 """
 
 import logging
-import math
 
 logger = logging.getLogger(__name__)
 

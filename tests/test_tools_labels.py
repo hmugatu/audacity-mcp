@@ -14,7 +14,7 @@ def test_add_label_sends_correct_command():
     conn = make_conn()
     add_label(conn, time=3.5, text="verse 1")
     conn.send_command.assert_called_once_with(
-        "AddLabelAt: SelectedText=verse 1 Start=3.5"
+        'AddLabelAt: SelectedText="verse 1" Start=3.5'
     )
 
 
@@ -22,7 +22,7 @@ def test_add_label_empty_text_sends_empty_string():
     conn = make_conn()
     add_label(conn, time=0.0, text="")
     conn.send_command.assert_called_once_with(
-        "AddLabelAt: SelectedText= Start=0.0"
+        'AddLabelAt: SelectedText="" Start=0.0'
     )
 
 

@@ -8,32 +8,24 @@ Audacity scripting commands:
   SelectTracks: Track=N TrackCount=1 Mode=Set
 """
 
-import json
 import logging
-from typing import Any
+
+from audacity_mcp.tools._utils import parse_json_response
 
 logger = logging.getLogger(__name__)
-
-
-def _parse_json_response(response: str) -> Any:
-    """Extract the JSON payload from a GetInfo response (first line)."""
-    first_line = response.split("\n")[0].strip()
-    if not first_line or first_line.startswith("BatchCommand"):
-        return None
-    return json.loads(first_line)
 
 
 def get_tracks(conn) -> list[dict]:
     """Return a list of all tracks in the current project."""
     response = conn.send_command("GetInfo: Type=Tracks")
-    result   = _parse_json_response(response)
+    result   = parse_json_response(response)
     return result if isinstance(result, list) else []
 
 
 def get_selection(conn) -> dict:
     """Return the current time selection as {start, end, tracks}."""
     response = conn.send_command("GetInfo: Type=Selection")
-    result   = _parse_json_response(response)
+    result   = parse_json_response(response)
     return result if isinstance(result, dict) else {}
 
 
