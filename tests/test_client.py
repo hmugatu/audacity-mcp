@@ -28,7 +28,7 @@ def test_find_pipes_raises_when_audacity_not_running():
 
 
 def test_find_pipes_windows_returns_named_pipes():
-    with patch("platform.system", return_value="Windows"):
+    with patch("audacity_mcp.client.platform.system", return_value="Windows"):
         conn = AudacityConnection()
         t, f = conn._find_pipes()
     assert t == r"\\.\pipe\ToSrvPipe"
