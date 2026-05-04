@@ -50,14 +50,17 @@ class AudacityConnection:
             return True
         try:
             to_path, from_path = self._find_pipes()
+        except ConnectionError:
+            raise  # let caller see the "mod-script-pipe not enabled" message
+        try:
             self._to_pipe   = open(to_path,   "w", encoding="utf-8")
             self._from_pipe = open(from_path,  "r", encoding="utf-8")
             self._connected = True
             logger.info("Connected to Audacity pipes.")
             return True
-        except Exception as exc:
-            logger.error("Could not connect to Audacity: %s", exc)
-            return False
+        except OSError as exc:
+            logger.error("Could not open Audacity pipes: %s", exc)
+            raise ConnectionError(f"Could not open Audacity pipes: {exc}") from exc
 
     def disconnect(self):
         """Close pipes cleanly."""
@@ -96,6 +99,6 @@ class AudacityConnection:
         while not buf.endswith("\n\n"):
             ch = self._from_pipe.read(1)
             if not ch:
-                break
+                raise RuntimeError("Audacity pipe closed before response was complete.")
             buf += ch
         return buf

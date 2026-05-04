@@ -1,7 +1,7 @@
 import json
 import platform
 import pytest
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import patch, MagicMock
 from audacity_mcp.client import AudacityConnection
 
 
@@ -11,8 +11,8 @@ def test_find_pipes_macos_returns_matching_files(tmp_path):
     to_pipe.touch()
     from_pipe.touch()
 
-    with patch("glob.glob", return_value=[str(to_pipe)]):
-        with patch("platform.system", return_value="Darwin"):
+    with patch("audacity_mcp.client.glob.glob", return_value=[str(to_pipe)]):
+        with patch("audacity_mcp.client.platform.system", return_value="Darwin"):
             conn = AudacityConnection()
             t, f = conn._find_pipes()
     assert t == str(to_pipe)
@@ -20,8 +20,8 @@ def test_find_pipes_macos_returns_matching_files(tmp_path):
 
 
 def test_find_pipes_raises_when_audacity_not_running():
-    with patch("glob.glob", return_value=[]):
-        with patch("platform.system", return_value="Darwin"):
+    with patch("audacity_mcp.client.glob.glob", return_value=[]):
+        with patch("audacity_mcp.client.platform.system", return_value="Darwin"):
             conn = AudacityConnection()
             with pytest.raises(ConnectionError, match="mod-script-pipe"):
                 conn._find_pipes()
