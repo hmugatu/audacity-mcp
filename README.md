@@ -17,7 +17,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server that lets Cl
 ## Prerequisites
 
 - [Audacity](https://www.audacityteam.org/) 3.x
-- `mod-script-pipe` enabled: **Edit → Preferences → Modules → mod-script-pipe → Enabled**, then restart Audacity
+- `mod-script-pipe` enabled: **Audacity → Preferences** (macOS) or **Edit → Preferences** (Windows/Linux) → **Modules → mod-script-pipe → Enabled**, then restart Audacity
 - Python 3.10+
 - [`uv`](https://docs.astral.sh/uv/) (recommended) or `pip`
 
@@ -45,6 +45,7 @@ Restart Claude Desktop. Audacity must be running with mod-script-pipe enabled be
 ```bash
 git clone https://github.com/jeffshoemaker/audacity-mcp
 cd audacity-mcp
+uv sync
 uv run audacity-mcp
 ```
 
