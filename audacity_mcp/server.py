@@ -33,11 +33,14 @@ conn = AudacityConnection()
 def get_audacity_connection() -> AudacityConnection:
     """Return the global connection, connecting on first use."""
     if not conn._connected:
-        if not conn.connect():
+        try:
+            conn.connect()
+        except ConnectionError as exc:
             raise RuntimeError(
                 "Cannot connect to Audacity. "
-                "Make sure Audacity is running with mod-script-pipe enabled."
-            )
+                "Make sure Audacity is running with mod-script-pipe enabled.\n"
+                f"Details: {exc}"
+            ) from exc
     return conn
 
 
