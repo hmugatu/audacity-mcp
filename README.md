@@ -32,7 +32,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "audacity": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/jeffshoemaker/audacity-mcp", "audacity-mcp"]
+      "args": ["--from", "git+https://github.com/tachyonshuggy/audacity-mcp", "audacity-mcp"]
     }
   }
 }
@@ -43,7 +43,7 @@ Restart Claude Desktop. Audacity must be running with mod-script-pipe enabled be
 ### From source
 
 ```bash
-git clone https://github.com/jeffshoemaker/audacity-mcp
+git clone https://github.com/tachyonshuggy/audacity-mcp
 cd audacity-mcp
 uv sync
 uv run audacity-mcp

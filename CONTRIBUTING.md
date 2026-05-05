@@ -6,7 +6,7 @@ and contributions of all sizes are welcome.
 ## Getting started
 
 ```bash
-git clone https://github.com/jeffshoemaker/audacity-mcp
+git clone https://github.com/tachyonshuggy/audacity-mcp
 cd audacity-mcp
 uv sync
 uv run pytest   # all tests should pass before you start

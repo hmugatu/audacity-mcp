@@ -9,7 +9,7 @@ Or add to Claude Desktop's claude_desktop_config.json:
       "mcpServers": {
         "audacity": {
           "command": "uvx",
-          "args": ["--from", "git+https://github.com/jeffshoemaker/audacity-mcp", "audacity-mcp"]
+          "args": ["--from", "git+https://github.com/tachyonshuggy/audacity-mcp", "audacity-mcp"]
         }
       }
     }
