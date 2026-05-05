@@ -14,6 +14,8 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) server that lets Cl
 - **Labels** — add, read, and export label tracks
 - **Transport** — play, stop, rewind, undo
 
+> **Note:** audacity-mcp is newly released and has been tested against the mod-script-pipe protocol specification, but not yet validated across every Audacity version in the wild. If a command doesn't behave as expected, please [open an issue](https://github.com/tachyonshuggy/audacity-mcp/issues) — fixes are very welcome.
+
 ## Prerequisites
 
 - [Audacity](https://www.audacityteam.org/) 3.x
