@@ -51,3 +51,16 @@ def test_select_tracks_sends_correct_command():
     conn.send_command.assert_called_once_with(
         "SelectTracks: Track=2 TrackCount=1 Mode=Set"
     )
+
+
+def test_get_tracks_parses_multiline_json():
+    """Audacity pretty-prints GetInfo output across several lines."""
+    response = (
+        '[\n'
+        '  { "name":"Vocal", "focused":1, "selected":1,\n'
+        '    "kind":"wave", "start":0, "end":5.2 },\n'
+        '  { "name":"Guitar", "kind":"wave", "start":0, "end":5.2 } ]\n'
+        'BatchCommand finished: OK'
+    )
+    result = get_tracks(make_conn(response))
+    assert [t["name"] for t in result] == ["Vocal", "Guitar"]
