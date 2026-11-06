@@ -107,27 +107,22 @@ def noise_reduction_profile() -> str:
     """
     Step 1: Capture a noise profile from the current selection.
     Select a region of pure background noise before calling this.
+    Audacity 3.x allows this once per session over scripting; to re-profile,
+    use Effect → Noise Reduction → Get Noise Profile in Audacity.
     """
     effects.noise_reduction_profile(get_audacity_connection())
     return "Noise profile captured. Now select the full audio and call noise_reduction_apply."
 
 
 @mcp.tool()
-def noise_reduction_apply(
-    level: int = 12,
-    sensitivity: float = 6.0,
-    frequency: int = 3,
-) -> str:
+def noise_reduction_apply() -> str:
     """
     Step 2: Apply the captured noise profile to the current selection.
-    Call noise_reduction_profile first on a noise-only region.
+    Call noise_reduction_profile first on a noise-only region. Uses the
+    reduction settings last chosen in Audacity's Noise Reduction dialog
+    (Audacity ignores scripted values for them).
     """
-    effects.noise_reduction_apply(
-        get_audacity_connection(),
-        level=level,
-        sensitivity=sensitivity,
-        frequency=frequency,
-    )
+    effects.noise_reduction_apply(get_audacity_connection())
     return "Noise reduction applied"
 
 
@@ -145,6 +140,7 @@ def export_audio(path: str, channels: int = 2) -> str:
     """
     Export the full project to a file. Format inferred from extension.
     Supported: .wav .flac .mp3 .aiff .ogg
+    Selects all audio first, replacing the current selection.
     """
     export.export_audio(get_audacity_connection(), path=path, channels=channels)
     return f"Exported → {path}"
@@ -167,23 +163,29 @@ def import_audio(path: str) -> str:
 # ── Label tools ───────────────────────────────────────────────────────────────
 
 @mcp.tool()
-def add_label(time: float, text: str) -> str:
-    """Add a point label at the given time (seconds) with the given text."""
-    labels.add_label(get_audacity_connection(), time=time, text=text)
+def add_label(time: float, text: str, end: float | None = None) -> str:
+    """
+    Add a label at `time` seconds with the given text. Pass `end` for a
+    region label. Moves the time selection to the label.
+    """
+    labels.add_label(get_audacity_connection(), time=time, text=text, end=end)
     return f"Label '{text}' added at {time:.3f}s"
 
 
 @mcp.tool()
 def get_labels() -> list[dict]:
-    """Return all labels in the project."""
+    """Return all labels as dicts with keys: track, start, end, text."""
     return labels.get_labels(get_audacity_connection())
 
 
 @mcp.tool()
 def export_labels(path: str) -> str:
-    """Export the label track to a tab-separated .txt file."""
-    labels.export_labels(get_audacity_connection(), path=path)
-    return f"Labels exported → {path}"
+    """
+    Write all labels to a tab-separated .txt file (Audacity's label format).
+    The path is on the machine running this server.
+    """
+    count = labels.export_labels(get_audacity_connection(), path=path)
+    return f"{count} labels exported → {path}"
 
 
 # ── Transport tools ───────────────────────────────────────────────────────────
